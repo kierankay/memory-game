@@ -1,0 +1,41 @@
+.card-body {
+    padding: 30px;
+    min-height: 144px;
+    color: red;
+}
+
+.card-head {
+    visibility: visible;
+    transition: visibility 0s linear 0.25s;
+}
+
+.card-head.hide {    
+    transition: visibility 0s linear 0.25s;
+    visibility: hidden;
+}
+
+.card {
+    margin: 20px;
+    transform: rotateY(0deg);
+    transition: transform 0.5s linear 0s;
+}
+
+.card.hide {
+    transform: rotateY(180deg);
+    transition: transform 0.5s linear 0s;
+}
+
+.h2 {
+    font-size: 5rem;
+}
+
+#scoretext,
+#score,
+#highscore,
+#highscoretext {
+    display: inline;
+}
+
+#scoretext {
+    margin-left: 20px;
+}
