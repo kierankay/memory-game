@@ -13,14 +13,15 @@ var scoreArea = document.getElementById('score');
 var highScoreArea = document.getElementById('highscore');
 document.addEventListener('DOMContentLoaded', function () {
     highScoreArea.innerHTML = window.localStorage.getItem('highscore');
+    initializeGame();
 });
 
-function createCard(cardVal) {
+function createCard(cardValue) {
     var cardHead = document.createElement('h2');
     var cardBody = document.createElement('div');
     var cardContainer = document.createElement('div');
     var cardArea = document.createElement('div');
-    cardHead.innerHTML = cardVal[0][0] + '<br>' + cardVal[0][1];
+    cardHead.innerHTML = cardValue[0][0] + '<br>' + cardValue[0][1];
     cardHead.classList.add('card-head', 'hide');
     cardBody.classList.add('card-body');
     cardBody.appendChild(cardHead);
@@ -83,30 +84,34 @@ function alertWon() {
     alert('YOU WON IN ' + score + ' GUESSES!')
 }
 
-startButton.addEventListener('click', function () {
-    // reset score to 0 and add highest score to local storage
-    correctCount = 0;
-    score = 0;
-    scoreArea.innerHTML = score;
-    highScoreArea.innerHTML = window.localStorage.getItem('highscore');
-
-    // clear card area
-    for (var i = 0, len = cardsArea.childNodes.length; i < len; i++) {
-        cardsArea.removeChild(cardsArea.childNodes[0]);
-    }
-
-    // repopulate card values
-    for (var i = 0; i < suits.length; i++) {
-        for (var j = 0; j < values.length; j++) {
-            cardValues.push([values[j], suits[i]]);
-            cardValues.push([values[j], suits[i]]);
+function initializeGame() {
+        // reset score to 0 and add highest score to local storage
+        correctCount = 0;
+        score = 0;
+        scoreArea.innerHTML = score;
+        highScoreArea.innerHTML = window.localStorage.getItem('highscore');
+    
+        // clear card area
+        for (var i = 0, len = cardsArea.childNodes.length; i < len; i++) {
+            cardsArea.removeChild(cardsArea.childNodes[0]);
         }
-    }
-    cardCount = cardValues.length;
+    
+        // repopulate card values
+        for (var i = 0; i < suits.length; i++) {
+            for (var j = 0; j < values.length; j++) {
+                cardValues.push([values[j], suits[i]]);
+                cardValues.push([values[j], suits[i]]);
+            }
+        }
+        cardCount = cardValues.length;
+    
+        // randomly place cards
+        while (cardValues.length > 0) {
+            var card = cardValues.splice(Math.floor(Math.random() * cardValues.length), 1);
+            cardsArea.appendChild(createCard(card));
+        }
+}
 
-    // randomly place cards
-    while (cardValues.length > 0) {
-        var card = cardValues.splice(Math.floor(Math.random() * cardValues.length), 1);
-        cardsArea.appendChild(createCard(card));
-    }
+startButton.addEventListener('click', function () {
+    initializeGame();
 });
