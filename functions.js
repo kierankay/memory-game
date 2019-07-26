@@ -21,11 +21,11 @@ function createCard(cardVal) {
     var cardContainer = document.createElement('div');
     var cardArea = document.createElement('div');
     cardHead.innerHTML = cardVal[0][0] + '<br>' + cardVal[0][1];
-    cardHead.classList.add('card-head', 'hide')
-    cardBody.classList.add('card-body')
+    cardHead.classList.add('card-head', 'hide');
+    cardBody.classList.add('card-body');
     cardBody.appendChild(cardHead);
     cardContainer.appendChild(cardBody);
-    cardContainer.classList.add('card', 'text-center', 'hide')
+    cardContainer.classList.add('card', 'text-center', 'hide');
     cardContainer.addEventListener('click', function () {
         if (matchedCards.length < 2) {
             revealCard(cardContainer);
