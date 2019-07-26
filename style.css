@@ -1,7 +1,8 @@
 .card-body {
     padding: 30px;
-    min-height: 144px;
+    min-height: 165px;
     color: red;
+    position: relative;
 }
 
 .card-head {
@@ -23,6 +24,27 @@
 .card.hide {
     transform: rotateY(180deg);
     transition: transform 0.5s linear 0s;
+}
+
+.cardtopnum {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+}
+
+.cardgraphic {
+    top: 32%;
+    position: absolute;
+    top: 33%;
+    left: 30%;
+    font-size: 50px;
+}
+
+.cardbotnum {
+    bottom: 5px;
+    right: 10px;
+    position: absolute;
+    transform: rotate(180deg);
 }
 
 .h2 {
