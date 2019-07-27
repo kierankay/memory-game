@@ -1,8 +1,9 @@
-var suits = ['<i class="fas fa-heart"></i>'];
-var unusedSuits = ['<i class="fas fa-diamond"></i>', '<i class="fas fa-club"></i>', '<i class="fas fa-spade"></i>'];
-var values = ['6', '7', '8', '9', '10', 'A', 'J', 'Q', 'K'];
-var unusedValues = ['2', '3', '4', '5', ]
-var cardValues = [];
+var suits = ['<span class="red">&hearts;</span>', '<span class="red">&diams;</span>', '<span class="black">&clubs;</span>', '<span class="black">&spades;</span>'];
+var values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'A', 'J', 'Q', 'K'];
+var cardBackURL = 'card-back.png'
+var deck = [];
+var playingCards = [];
+var difficulty; 
 var matchedCards = [];
 var cardCount;
 var correctCount = 0;
@@ -12,11 +13,17 @@ var startButton = document.getElementById('start');
 var scoreArea = document.getElementById('score');
 var highScoreArea = document.getElementById('highscore');
 document.addEventListener('DOMContentLoaded', function () {
+    if (window.localStorage.getItem('difficulty') === null) {
+        difficulty = 6;
+    } else {
+        difficulty = window.localStorage.getItem('difficulty');
+    }
     highScoreArea.innerHTML = window.localStorage.getItem('highscore');
+    document.getElementById('diffselector').value = difficulty;
     initializeGame();
 });
 
-function createCard(cardValue) {
+function createCard(playingCards) {
     var cardHead = document.createElement('h2');
     var cardBody = document.createElement('div');
     var cardContainer = document.createElement('div');
@@ -24,22 +31,36 @@ function createCard(cardValue) {
     var cardTopNum = document.createElement('span');
     var cardBotNum = document.createElement('span');
     var cardGraphic = document.createElement('span');
-    cardTopNum.innerHTML = cardValue[0][0];
-    cardBotNum.innerHTML = cardValue[0][0];
-    cardGraphic.innerHTML = cardValue[0][1];
+    var backGraphic = document.createElement('img');
+    cardTopNum.innerHTML = playingCards[0][0][0];
+    cardBotNum.innerHTML = playingCards[0][0][0];
+    cardGraphic.innerHTML = playingCards[0][0][1];
+    backGraphic.setAttribute('src',cardBackURL);
+    if (cardGraphic.firstChild.classList.contains('red')) {
+        cardTopNum.classList.add('red');
+        cardBotNum.classList.add('red');
+    } else {
+        cardTopNum.classList.add('black');
+        cardBotNum.classList.add('black');
+    }
     cardHead.appendChild(cardTopNum);
     cardHead.appendChild(cardGraphic);
     cardHead.appendChild(cardBotNum);
     cardTopNum.classList.add('cardtopnum');
     cardBotNum.classList.add('cardbotnum');
-    cardGraphic.classList.add('cardgraphic');
+    cardGraphic.classList.add('frontgraphic');
+    backGraphic.classList.add('backgraphic');
     cardHead.classList.add('card-head', 'hide');
     cardBody.classList.add('card-body');
     cardBody.appendChild(cardHead);
+    cardBody.appendChild(backGraphic);
     cardContainer.appendChild(cardBody);
     cardContainer.classList.add('card', 'text-center', 'hide');
     cardContainer.addEventListener('click', function () {
-        if (matchedCards.length < 2) {
+        if (matchedCards.length === 0) {
+            revealCard(cardContainer);
+            addToPair(cardContainer);
+        } else if (matchedCards.length === 1) {
             revealCard(cardContainer);
             addToPair(cardContainer);
             checkPair();
@@ -107,18 +128,27 @@ function initializeGame() {
             cardsArea.removeChild(cardsArea.childNodes[0]);
         }
     
-        // repopulate card values
+        // populate deck
         for (var i = 0; i < suits.length; i++) {
             for (var j = 0; j < values.length; j++) {
-                cardValues.push([values[j], suits[i]]);
-                cardValues.push([values[j], suits[i]]);
+                deck.push([values[j], suits[i]]);
             }
         }
-        cardCount = cardValues.length;
+
+        // get difficulty
+        window.localStorage.setItem('difficulty', document.getElementById('diffselector').value);
+        difficulty = window.localStorage.getItem('difficulty');
+
+        // draw cards based on selected difficulty
+        for (var i = 0 ; i < difficulty; i++) {
+            playingCards.push(deck.splice(Math.floor(Math.random() * deck.length), 1))
+        }
+        playingCards = playingCards.concat(playingCards);
+        cardCount = playingCards.length;
     
         // randomly place cards
-        while (cardValues.length > 0) {
-            var card = cardValues.splice(Math.floor(Math.random() * cardValues.length), 1);
+        while (playingCards.length > 0) {
+            var card = playingCards.splice(Math.floor(Math.random() * playingCards.length), 1)
             cardsArea.appendChild(createCard(card));
         }
 }

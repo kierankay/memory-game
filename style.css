@@ -1,8 +1,15 @@
 .card-body {
     padding: 30px;
     min-height: 165px;
-    color: red;
     position: relative;
+}
+
+.red {
+    color: red;
+}
+
+.black {
+    color: black;
 }
 
 .card-head {
@@ -32,12 +39,31 @@
     left: 10px;
 }
 
-.cardgraphic {
-    top: 32%;
+.frontgraphic {
     position: absolute;
-    top: 33%;
-    left: 30%;
-    font-size: 50px;
+    top: 25%;
+    left: 29%;
+    font-size: 70px;
+}
+
+.card.hide .backgraphic {
+    width: 90%;
+    height: 90%;
+    visibility: inherit;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    transition: visibility 0s linear 0.25s;
+}
+
+.card .backgraphic {
+    width: 90%;
+    height: 90%;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    visibility: hidden;
+    transition: visibility 0s linear 0.25s;
 }
 
 .cardbotnum {
@@ -47,17 +73,20 @@
     transform: rotate(180deg);
 }
 
-.h2 {
-    font-size: 5rem;
+#start {
+    margin-top: -5px;
 }
 
 #scoretext,
 #score,
 #highscore,
-#highscoretext {
+#highscoretext,
+#difftext {
     display: inline;
 }
 
-#scoretext {
-    margin-left: 20px;
+#diffselector {
+    width: 100px;
+    display: inline;
+    margin-left: 10px;
 }
