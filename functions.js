@@ -144,7 +144,8 @@ function initializeGame() {
         window.localStorage.setItem('difficulty', document.getElementById('diffselector').value);
         difficulty = window.localStorage.getItem('difficulty');
 
-        // reset score to 0 and add highest score to local storage
+        // reset deck, score, and highest score
+        deck = [];
         correctCount = 0;
         score = 0;
         scoreArea.innerHTML = score;
