@@ -45,6 +45,14 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeGame();
 });
 
+function setHighScore() {
+    if (highScores['' + difficulty] === null || highScores['' + difficulty] > score) {
+        highScores['' + difficulty] = score;
+        window.localStorage.setItem('highscores', JSON.stringify(highScores));
+        highScoreArea.innerHTML = score;
+    }
+}
+
 function createCard(playingCards) {
     var cardHead = document.createElement('h2');
     var cardBody = document.createElement('div');
@@ -54,9 +62,9 @@ function createCard(playingCards) {
     var cardBotNum = document.createElement('span');
     var cardGraphic = document.createElement('span');
     var backGraphic = document.createElement('img');
-    cardTopNum.innerHTML = playingCards[0];
-    cardBotNum.innerHTML = playingCards[0];
-    cardGraphic.innerHTML = playingCards[1];
+    cardTopNum.innerHTML = playingCards[0][0];
+    cardBotNum.innerHTML = playingCards[0][0];
+    cardGraphic.innerHTML = playingCards[0][1];
     backGraphic.setAttribute('src',cardBackURL);
     if (cardGraphic.firstChild.classList.contains('red')) {
         cardTopNum.classList.add('red');
@@ -112,6 +120,7 @@ function checkPair() {
     if (matchedCards[0].firstChild.firstChild.innerHTML === matchedCards[1].firstChild.firstChild.innerHTML) {
         matchedCards.length = 0;
         correctCount += 2;
+        console.log('found pair!')
         if (correctCount === cardCount) {
             setHighScore();
             alertWon();
@@ -124,14 +133,6 @@ function checkPair() {
             score++;
             scoreArea.innerHTML = score;
         }, 1000);
-    }
-}
-
-function setHighScore() {
-    if (highScores['' + difficulty] === null || highScores['' + difficulty] > score) {
-        highScores['' + difficulty] = score;
-        window.localStorage.setItem('highscores', JSON.stringify(highScores));
-        highScoreArea.innerHTML = score;
     }
 }
 
@@ -169,10 +170,11 @@ function initializeGame() {
         }
         playingCards = playingCards.concat(playingCards);
         cardCount = playingCards.length;
+        console.log(playingCards)
     
         // randomly place cards on board
         while (playingCards.length > 0) {
-            var card = playingCards.splice(Math.floor(Math.random() * playingCards.length), 1)[0]
+            var card = playingCards.splice(Math.floor(Math.random() * playingCards.length), 1)
             cardsArea.appendChild(createCard(card));
         }
 }
